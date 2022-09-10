@@ -25,8 +25,8 @@ jobs:
         mkdir -p ~/android/pe
     - name: 配置repo和git
       run: |
-        curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
-        chmod a+x /bin/repo
+        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+        chmod a+x ~/bin/repo
         git config --global user.email "ranchangxin@gmail.com"
         git config --global user.name "wnnce"
     - name: 初始化库并下载源码
