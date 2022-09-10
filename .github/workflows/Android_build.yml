@@ -1,0 +1,50 @@
+name: Build Android
+
+on: 
+  push: 
+    branches: [main]
+  watch:
+    types: [started]
+jobs:
+  build_Android:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: 安装依赖项
+      run: |
+        sudo apt-get update
+        sudo apt install git curl
+    - name: 运行配置脚本并创建目录
+      run: |
+        cd /
+        git clone https://github.com/akhilnarang/scripts
+        cd scripts
+        ./setup/android_build_env.sh
+        mkdir -p /bin
+        mkdir -p /android/pe
+    - name: 配置repo和git
+      run: |
+        curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
+        chmod a+x /bin/repo
+        git config --global user.email "ranchangxin@gmail.com"
+        git config --global user.name "wnnce"
+    - name: 初始化库并下载源码
+      run: |
+        cd /android/pe
+        repo init -u https://github.com/PixelExperience/manifest -b twelve-plus
+        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+    - name: 准备代码
+      run: |
+        source build/envsetup.sh
+        lunch aosp_apollo-userdebug
+    - name: 开始编译
+      run: |
+      croot
+      mka bacon -j$(nproc --all)
+    - name : 上传固件
+      uses: actions/upload-artifact@master
+      if: always()  
+      with:
+        name: Android-packages
+        path: $OUT
