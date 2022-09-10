@@ -40,8 +40,8 @@ jobs:
         lunch aosp_apollo-userdebug
     - name: 开始编译
       run: |
-      croot
-      mka bacon -j$(nproc --all)
+        croot
+        mka bacon -j$(nproc --all)
     - name : 上传固件
       uses: actions/upload-artifact@master
       if: always()  
