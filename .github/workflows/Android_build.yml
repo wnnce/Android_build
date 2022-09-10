@@ -17,12 +17,12 @@ jobs:
         sudo apt install git curl
     - name: 运行配置脚本并创建目录
       run: |
-        cd /
+        cd ~/
         git clone https://github.com/akhilnarang/scripts
         cd scripts
         ./setup/android_build_env.sh
-        mkdir -p /bin
-        mkdir -p /android/pe
+        mkdir -p ~/bin
+        mkdir -p ~/android/pe
     - name: 配置repo和git
       run: |
         curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
@@ -31,7 +31,7 @@ jobs:
         git config --global user.name "wnnce"
     - name: 初始化库并下载源码
       run: |
-        cd /android/pe
+        cd ~/android/pe
         repo init -u https://github.com/PixelExperience/manifest -b twelve-plus
         repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
     - name: 准备代码
